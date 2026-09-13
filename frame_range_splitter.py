@@ -41,6 +41,21 @@ class VIEW3D_PT_frame_range_splitter(bpy.types.Panel):
             default = 1,
             min = 1
         )
+    def calculate_new_frame_range(total_frames_end,total_frames_start,num_computers,current_computer):
+
+        amount_of_frames = total_frames_end - total_frames_start
+
+        chunk_size = amount_of_frames / num_computers
+
+        new_start_frame = total_frames_start + (chunk_size * (current_computer- 1))
+
+        new_end_frame = total_frames_start + (chunk_size * current_computer)
+
+        bpy.context.scene.frame_start = new_start_frame
+        
+        bpy.context.scene.frame_end = new_end_frame
+
+
     
     def draw(self, context):
         #add a label
@@ -55,7 +70,8 @@ class VIEW3D_PT_frame_range_splitter(bpy.types.Panel):
         
         self.layout.prop(context.scene, "current_computer")
 
+        self.layout.operator(self.calculate_new_frame_range)
+
 #register panel so it will be displayed
 bpy.utils.register_class(VIEW3D_PT_frame_range_splitter)
-
 
