@@ -16,10 +16,44 @@ class VIEW3D_PT_frame_range_splitter(bpy.types.Panel):
     bl_region_type = "UI"
     bl_category = "Frame Range Splitter"
 
+
+
+
+    bpy.types.Scene.total_frames_start = bpy.props.IntProperty(
+            name = "Start Frame?",
+            default = 1,
+            min = 0
+        )
+    bpy.types.Scene.total_frames_end = bpy.props.IntProperty(
+                name = "End Frame?",
+                default = 1,
+                min = 0
+            )
+
+    bpy.types.Scene.num_computers = bpy.props.IntProperty(
+        name = "How many computers?",
+        default = 1,
+        min = 1
+    )
+
+    bpy.types.Scene.current_computer = bpy.props.IntProperty(
+            name = "Which computer is this",
+            default = 1,
+            min = 1
+        )
     
     def draw(self, context):
         #add a label
         self.layout.label(text="Hello World")
+        self.layout.operator("mesh.primitive_cone_add")
+        
+        self.layout.prop(context.scene, "total_frames_start")
+        
+        self.layout.prop(context.scene, "total_frames_end")
+        
+        self.layout.prop(context.scene, "num_computers")
+        
+        self.layout.prop(context.scene, "current_computer")
 
 #register panel so it will be displayed
 bpy.utils.register_class(VIEW3D_PT_frame_range_splitter)
