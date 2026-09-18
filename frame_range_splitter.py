@@ -23,6 +23,11 @@ class calculate_new_frame_range(bpy.types.Operator):
         amount_of_frames = context.scene.total_frames_end - context.scene.total_frames_start + 1
         
         chunk_size = amount_of_frames // context.scene.num_computers
+
+
+        remainder = amount_of_frames % context.scene.num_computers
+
+
         """
         if  amount_of_frames % context.scene.num_computers != 0:
             chunk_size += 1
@@ -42,6 +47,17 @@ class calculate_new_frame_range(bpy.types.Operator):
         else:
             new_end_frame = new_start_frame + (chunk_size - 1) 
 
+        
+        #this is the part of the code that distrubtes any remainder frames one by one into each chunk
+        if context.scene.current_computer <= remainder:
+            
+            new_start_frame = new_start_frame + context.scene.current_computer -1 
+            new_end_frame = new_end_frame + context.scene.current_computer
+        else:
+            new_start_frame = new_start_frame + remainder
+            new_end_frame = new_end_frame + remainder
+        
+        
         #last computer will end on the last frame and not go over
         if (context.scene.current_computer == context.scene.num_computers):
             new_end_frame = context.scene.total_frames_end
