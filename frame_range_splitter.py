@@ -19,6 +19,8 @@ class calculate_new_frame_range(bpy.types.Operator):
         amount_of_frames = context.scene.total_frames_end - context.scene.total_frames_start + 1
         
         chunk_size = amount_of_frames // context.scene.num_computers
+        if  amount_of_frames % context.scene.num_computers != 0:
+            chunk_size += 1
         
         new_start_frame = context.scene.total_frames_start + (chunk_size * (context.scene.current_computer- 1))
         
