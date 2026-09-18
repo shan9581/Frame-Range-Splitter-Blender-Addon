@@ -1,10 +1,14 @@
+import bpy
+
+#addon metadata
 bl_info = {
     "name": "Frame Range Splitter",
     "blender": (2,80,0),
+    "category": "Object" 
 }
 
 
-import bpy
+
 
 
 
@@ -106,14 +110,19 @@ class VIEW3D_PT_frame_range_splitter(bpy.types.Panel):
         self.layout.operator("scene.calculate_new_range")
 
 #register panel so it will be displayed
-#def register():
-bpy.utils.register_class(calculate_new_frame_range)
-bpy.utils.register_class(VIEW3D_PT_frame_range_splitter)
+def register():
+    bpy.utils.register_class(calculate_new_frame_range)
+    bpy.utils.register_class(VIEW3D_PT_frame_range_splitter)
 
 
-"""
+
 def unregister():
         
     bpy.utils.unregister_class(calculate_new_frame_range)
     bpy.utils.unregister_class(VIEW3D_PT_frame_range_splitter)
-"""
+
+
+#allows to still run through script editor
+if __name__ == "__main__":
+    register()
+    
