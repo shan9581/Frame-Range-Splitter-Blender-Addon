@@ -28,8 +28,13 @@ class calculate_new_frame_range(bpy.types.Operator):
         if (context.scene.total_frames_start + (chunk_size * (context.scene.current_computer - 1))) == new_start_frame:
             if context.scene.current_computer != 1:
                 new_start_frame +=1
+            if  context.scene.current_computer == 2:
+                new_start_frame -=1
 
-        new_end_frame = context.scene.total_frames_start + (chunk_size * context.scene.current_computer)
+        if context.scene.current_computer == 1:
+            new_end_frame = context.scene.total_frames_start + chunk_size - 1
+        else:
+            new_end_frame = context.scene.total_frames_start + (chunk_size * context.scene.current_computer)
 
         #last computer will end on the last frame and not go over
         if (context.scene.current_computer == context.scene.num_computers):
