@@ -13,10 +13,10 @@ class calculate_new_frame_range(bpy.types.Operator):
     bl_idname = "scene.calculate_new_range"
     bl_label = "Calculate New Frame Range"
 
-
+    #the formula to calculate the new range
     def execute(self, context):
         
-        amount_of_frames = context.scene.total_frames_end - context.scene.total_frames_start
+        amount_of_frames = context.scene.total_frames_end - context.scene.total_frames_start + 1
         
         chunk_size = amount_of_frames // context.scene.num_computers
         
@@ -46,7 +46,7 @@ class VIEW3D_PT_frame_range_splitter(bpy.types.Panel):
 
 
 
-
+    #fields on the panel
     bpy.types.Scene.total_frames_start = bpy.props.IntProperty(
             name = "Start Frame?",
             default = 1,
