@@ -24,18 +24,19 @@ class calculate_new_frame_range(bpy.types.Operator):
             chunk_size += 1
         """ 
         new_start_frame = context.scene.total_frames_start + (chunk_size * (context.scene.current_computer- 1))
-
+        """
         #ensures new start frame does not overlap with previous end frame so that it does not render the same thing twice
         if (context.scene.total_frames_start + (chunk_size * (context.scene.current_computer - 1))) == new_start_frame:
             if context.scene.current_computer != 1:
                 new_start_frame +=1
             if  context.scene.current_computer == 2:
                 new_start_frame -=1
-
+        """
+        # can be compressed
         if context.scene.current_computer == 1:
             new_end_frame = context.scene.total_frames_start + chunk_size - 1
         else:
-            new_end_frame = context.scene.total_frames_start + (chunk_size * context.scene.current_computer)
+            new_end_frame = new_start_frame + (chunk_size - 1) 
 
         #last computer will end on the last frame and not go over
         if (context.scene.current_computer == context.scene.num_computers):
