@@ -6,6 +6,34 @@ bl_info = {
 
 import bpy
 
+
+
+#making the calculations into an operator that can be called by the panel button
+class calculate_new_frame_range(bpy.types.Operator):
+    bl_idname = "scene.calculate_new_range"
+    bl_label = "Calculate New Frame Range"
+
+
+    def execute(self, context):
+        
+        amount_of_frames = context.scene.total_frames_end - context.scene.total_frames_start
+        
+        chunk_size = amount_of_frames // context.scene.num_computers
+        
+        new_start_frame = context.scene.total_frames_start + (chunk_size * (context.scene.current_computer- 1))
+        
+        new_end_frame = context.scene.total_frames_start + (chunk_size * context.scene.current_computer)
+
+        print(new_start_frame)
+        print(new_end_frame)
+        
+        bpy.context.scene.frame_start = new_start_frame
+        bpy.context.scene.frame_end = new_end_frame
+        
+
+        return {'FINISHED'}
+
+
 class VIEW3D_PT_frame_range_splitter(bpy.types.Panel):
     """frame range splitter"""
     bl_idname = "VIEW3D_PT_frame_range_splitter" 
@@ -41,19 +69,7 @@ class VIEW3D_PT_frame_range_splitter(bpy.types.Panel):
             default = 1,
             min = 1
         )
-    def calculate_new_frame_range(total_frames_end,total_frames_start,num_computers,current_computer):
-
-        amount_of_frames = total_frames_end - total_frames_start
-
-        chunk_size = amount_of_frames / num_computers
-
-        new_start_frame = total_frames_start + (chunk_size * (current_computer- 1))
-
-        new_end_frame = total_frames_start + (chunk_size * current_computer)
-
-        bpy.context.scene.frame_start = new_start_frame
-        
-        bpy.context.scene.frame_end = new_end_frame
+    
 
 
     
@@ -70,8 +86,17 @@ class VIEW3D_PT_frame_range_splitter(bpy.types.Panel):
         
         self.layout.prop(context.scene, "current_computer")
 
-        self.layout.operator(self.calculate_new_frame_range)
+        self.layout.operator("scene.calculate_new_range")
 
 #register panel so it will be displayed
+#def register():
+bpy.utils.register_class(calculate_new_frame_range)
 bpy.utils.register_class(VIEW3D_PT_frame_range_splitter)
 
+
+"""
+def unregister():
+        
+    bpy.utils.unregister_class(calculate_new_frame_range)
+    bpy.utils.unregister_class(VIEW3D_PT_frame_range_splitter)
+"""
