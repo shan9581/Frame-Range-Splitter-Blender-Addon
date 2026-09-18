@@ -23,7 +23,12 @@ class calculate_new_frame_range(bpy.types.Operator):
             chunk_size += 1
         
         new_start_frame = context.scene.total_frames_start + (chunk_size * (context.scene.current_computer- 1))
-        
+
+        #ensures new start frame does not overlap with previous end frame so that it does not render the same thing twice
+        if (context.scene.total_frames_start + (chunk_size * (context.scene.current_computer - 1))) == new_start_frame:
+            if context.scene.current_computer != 1:
+                new_start_frame +=1
+
         new_end_frame = context.scene.total_frames_start + (chunk_size * context.scene.current_computer)
 
         print(new_start_frame)
